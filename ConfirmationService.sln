@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfirmationService.Host", "ConfirmationService.Host\ConfirmationService.Host.csproj", "{34FEB589-3510-4801-B5B4-63F61E60EBB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfirmationService.BusinessLogic", "ConfirmationService.BusinessLogic\ConfirmationService.BusinessLogic.csproj", "{16BB4838-F678-4248-ABD4-C0B7798A8946}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34FEB589-3510-4801-B5B4-63F61E60EBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34FEB589-3510-4801-B5B4-63F61E60EBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34FEB589-3510-4801-B5B4-63F61E60EBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34FEB589-3510-4801-B5B4-63F61E60EBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BB4838-F678-4248-ABD4-C0B7798A8946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BB4838-F678-4248-ABD4-C0B7798A8946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BB4838-F678-4248-ABD4-C0B7798A8946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BB4838-F678-4248-ABD4-C0B7798A8946}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -16,8 +16,8 @@ public class MailSendController
     }
 
     [HttpPost]
-    public void Send([FromBody] EmailModel emailModel)
+    public async Task Send([FromBody] EmailModel emailModel)
     {
-        _mailSendService.SendEmail(emailModel);
+        await _mailSendService.SendEmail(emailModel);
     }
 }

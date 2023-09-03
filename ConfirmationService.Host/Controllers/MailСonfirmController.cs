@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace ConfirmationService.Host.Controllers;
 
 [ApiController]
-[Route("EmailConfirmation")]
-public class MailСonfirmRequest
+[Route("email-confirmation")]
+public class MailСonfirmController
 {
-    [HttpGet("Confirm")]
+    [HttpGet("confirm")]
     public string Confirmation(int id)
     {
         return $"email confirmed!";
     }
     
     [HttpPost("new")]
-    public async void NewConfirnation(ConfirmEmailModel model)
+    public void NewConfirmation(ConfirmEmailModel model)
     {
         
     }

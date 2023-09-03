@@ -10,4 +10,8 @@
       <PackageReference Include="MailKit" Version="4.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ConfirmationService.Infrastructure\ConfirmationService.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -7,11 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MailKit" Version="4.1.0" />
+        <PackageReference Include="MailKit" Version="4.1.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ConfirmationService.BusinessLogic\ConfirmationService.BusinessLogic.csproj" />
+        <ProjectReference Include="..\ConfirmationService.BusinessLogic\ConfirmationService.BusinessLogic.csproj" />
     </ItemGroup>
 
 </Project>

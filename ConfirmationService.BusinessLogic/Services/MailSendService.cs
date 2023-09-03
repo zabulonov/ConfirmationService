@@ -1,29 +1,29 @@
+using ConfirmationService.Infrastructure.MailConnectService;
 using MimeKit;
 
 namespace ConfirmationService.BusinessLogic.Services;
 
 public class MailSendService
 {
-    private readonly MailConnect mail;
-    
-    public MailSendService(MailConnect mailConnect)
+    private readonly MailConnect _mailConnect;
+
+    public MailSendService(MailConnect mailConnectConnect)
     {
-        mail = mailConnect;
+        _mailConnect = mailConnectConnect;
     }
 
-    public void SendEmail(EmailModel emailModel)
+    public async Task SendEmail(EmailModel emailModel)
     {
-        var message = new MimeMessage ();
-        message.From.Add (new MailboxAddress (emailModel.FromName, "zabulonov444@yandex.ru"));
-        message.To.Add (new MailboxAddress (emailModel.ToName, emailModel.ToAdress));
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress(emailModel.FromName, "zabulonov444@yandex.ru"));
+        message.To.Add(new MailboxAddress(emailModel.ToName, emailModel.ToAdress));
         message.Subject = emailModel.Subject;
 
-        message.Body = new TextPart ("plain") {
-            Text = emailModel.Body + 
-                   @" 
-                https://localhost:7276/EmailConfirmation/Confirm"
-
+        message.Body = new TextPart("plain")
+        {
+            Text = emailModel.Body +
+                   @"https://localhost:7276/EmailConfirmation/Confirm"
         };
-        mail.client.Send(message);
+        await _mailConnect.Send(message);
     }
 }

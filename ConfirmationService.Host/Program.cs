@@ -1,6 +1,9 @@
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.Host;
+using ConfirmationService.Infrastructure;
 using ConfirmationService.Infrastructure.MailConnect;
 using ConfirmationService.Infrastructure.MailConnectService;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
@@ -15,11 +18,14 @@ builder.Services.AddScoped(isp =>
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddDbContext<ConfirmServiceContext>(
+    o =>o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
 
 var app = builder.Build();
 app.UseRouting();
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-app.MapGet("/", () => "Hello World!");
+//app.MapGet("/", () => "Hello World!");
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DCS.Host v1"));
 

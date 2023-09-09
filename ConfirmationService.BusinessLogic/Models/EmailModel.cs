@@ -1,4 +1,4 @@
-namespace ConfirmationService.BusinessLogic;
+namespace ConfirmationService.BusinessLogic.Models;
 public class EmailModel
 {
     public string FromName { get; set; }

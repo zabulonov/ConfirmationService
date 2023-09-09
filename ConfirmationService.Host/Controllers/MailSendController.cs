@@ -1,4 +1,5 @@
 using ConfirmationService.BusinessLogic;
+using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 

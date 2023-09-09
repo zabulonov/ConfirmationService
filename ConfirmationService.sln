@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfirmationService.Busines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfirmationService.Infrastructure", "ConfirmationService.Infrastructure\ConfirmationService.Infrastructure.csproj", "{A96ADCCE-A4DC-414B-8DB3-E6D6A57E2150}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfirmationService.Core", "ConfirmationService.Core\ConfirmationService.Core.csproj", "{F602B00D-7621-4C5A-9070-E56615ACE78B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A96ADCCE-A4DC-414B-8DB3-E6D6A57E2150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A96ADCCE-A4DC-414B-8DB3-E6D6A57E2150}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A96ADCCE-A4DC-414B-8DB3-E6D6A57E2150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F602B00D-7621-4C5A-9070-E56615ACE78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F602B00D-7621-4C5A-9070-E56615ACE78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F602B00D-7621-4C5A-9070-E56615ACE78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F602B00D-7621-4C5A-9070-E56615ACE78B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

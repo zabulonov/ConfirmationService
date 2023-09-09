@@ -1,4 +1,4 @@
-namespace ConfirmationService.BusinessLogic;
+namespace ConfirmationService.BusinessLogic.Services;
 
 public class ConfirmRequestService
 {

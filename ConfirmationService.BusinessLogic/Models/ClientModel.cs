@@ -1,4 +1,4 @@
-namespace ConfirmationService.BusinessLogic.DbModels;
+namespace ConfirmationService.BusinessLogic.Models;
 
 public class ClientModel
 {

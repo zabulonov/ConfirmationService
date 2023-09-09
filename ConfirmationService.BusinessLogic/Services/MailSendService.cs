@@ -1,3 +1,4 @@
+using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.Infrastructure.MailConnectService;
 using MimeKit;
 

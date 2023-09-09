@@ -1,15 +1,17 @@
-using System.ComponentModel.DataAnnotations;
+namespace ConfirmationService.BusinessLogic.Models;
 
-namespace ConfirmationService.BusinessLogic.DbModels;
 
 public class UserModel
 {
     public int Id { get; set; }
-
-    [Required]
+    
     public string CompanyName { get; set; }
 
-    public Guid Token { get; private set; }
+    public Guid Token { get; set; }
+
+    public UserModel()
+    {
+    }
 
     public UserModel(string companyName)
     {

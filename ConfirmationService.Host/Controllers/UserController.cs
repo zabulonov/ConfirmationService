@@ -1,4 +1,6 @@
+using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
@@ -13,18 +15,22 @@ public class UserController
     {
         _userService = userService;
     }
+    
+    [HttpGet("{id}")]
+    public async Task<UserModel?> GetUser(long id)
+    {
+        return await _userService.GetUser(id);
+    }
 
     [HttpPut("Register")]
     public async Task<Guid> NewUser([FromBody] string companyName)
     {
-        return _userService.RegisterNewUser(companyName);
+        return await _userService.RegisterNewUser(companyName);
     }
 
     [HttpDelete("DeleteMyself")]
-    public void Delete([FromBody] Guid token)
+    public async Task Delete([FromBody] Guid token)
     {
-        _userService.DeleteUser(_userService.CheckToken(token));
+        await _userService.DeleteUser(token);
     }
-    
-    
 }

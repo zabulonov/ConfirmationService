@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using ConfirmationService.Infrastructure.MailConnect;
 using MailKit.Net.Smtp;
 using MimeKit;
 

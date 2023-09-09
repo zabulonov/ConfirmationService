@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ConfirmationService.Host.Migrations
+namespace ConfirmationService.Infrastructure.Migrations
 {
     public partial class Initial : Migration
     {
@@ -15,7 +16,8 @@ namespace ConfirmationService.Host.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CompanyName = table.Column<string>(type: "text", nullable: false)
+                    CompanyName = table.Column<string>(type: "text", nullable: false),
+                    Token = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

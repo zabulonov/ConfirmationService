@@ -1,4 +1,4 @@
-namespace ConfirmationService.Infrastructure.MailConnect;
+namespace ConfirmationService.Infrastructure.MailConnectService;
 
 public class MailConnectConfiguration
 {

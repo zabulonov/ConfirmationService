@@ -1,3 +1,4 @@
+using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
 using ConfirmationService.Host;
 using ConfirmationService.Infrastructure.EntityFramework;
@@ -17,22 +18,11 @@ builder.Services.AddScoped(isp =>
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
-builder.Services.AddScoped<UserService>();
+
 builder.Services.AddDbContext<ConfirmServiceContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
 
-
-builder.Services.AddSingleton(async isp =>
-{
-    var dbContext = isp.GetRequiredService<ConfirmServiceContext>();
-    var clientTokens = await dbContext.Users.ToListAsync();
-    var tokens = clientTokens.Select(x => new UserTokens.UserToken
-    {
-        Token = x.Token,
-        CompanyName = x.CompanyName
-    }).ToList();
-    return new UserTokens(tokens);
-});
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 app.UseRouting();
@@ -40,5 +30,11 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DCS.Host v1"));
 
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ConfirmServiceContext>();
+    await db.Database.MigrateAsync();
+}
 
 app.Run();

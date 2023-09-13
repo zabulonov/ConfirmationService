@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ConfirmationService.Core.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +12,16 @@ public class ConfirmServiceContext : DbContext
     {
     }
     
-    
-
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     modelBuilder.UseSerialColumns();
-    // }
-
-    public DbSet<User> Users { get; set; }
     // public DbSet<ClientModel> Clients { get; set; }
 
     public Task<User> GetUserByToken(Guid token)
     {
         return Set<User>().FirstOrDefaultAsync(x => x.Token.Equals(token));
+    }
+
+    public Task<List<User>> GetAllUsers()
+    {
+        return Set<User>().ToListAsync();
     }
 
     public async Task DeleteUserByToken(Guid token)

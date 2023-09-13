@@ -1,5 +1,6 @@
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.Core.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,13 @@ public class UserController
     }
     
     [HttpGet("{id}")]
-    public async Task<UserModel?> GetUser(long id)
+    public async Task<User> GetUser(long id)
     {
-        return await _userService.GetUser(id);
+        return (await _userService.GetUser(id))!;
     }
 
     [HttpPut("Register")]
-    public async Task<Guid> NewUser([FromBody] string companyName)
+    public async Task<Guid> NewUser(string companyName)
     {
         return await _userService.RegisterNewUser(companyName);
     }

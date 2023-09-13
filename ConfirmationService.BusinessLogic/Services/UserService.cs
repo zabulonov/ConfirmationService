@@ -1,6 +1,5 @@
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.Core.Entity;
-using ConfirmationService.Host;
 using ConfirmationService.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,30 +7,23 @@ namespace ConfirmationService.BusinessLogic.Services;
 
 public class UserService
 {
-    private readonly ConfirmServiceContext _db;
-    private readonly UserTokens _userTokens;
+    private readonly ConfirmServiceContext _confirmServiceContext;
 
-    public UserService(ConfirmServiceContext db, UserTokens userTokens)
+    public UserService(ConfirmServiceContext confirmServiceContext)
     {
-        _db = db;
-        _userTokens = userTokens;
+        _confirmServiceContext = confirmServiceContext;
     }
 
     public async Task<Guid> RegisterNewUser(string companyName)
     {
         var newUser = new User(companyName);
-        await _db.AddUser(newUser);
-        _userTokens.AddUser(new UserTokens.UserToken
-        {
-            Token = newUser.Token,
-            CompanyName = newUser.CompanyName
-        });
+        await _confirmServiceContext.AddUser(newUser);
         return newUser.Token;
     }
 
     public async Task<UserModel> CheckToken(Guid token)
     {
-        var user = await _db.GetUserByToken(token);
+        var user = await _confirmServiceContext.GetUserByToken(token);
         if (user == null)
         {
             throw new Exception("Token isn't valid.");    
@@ -49,7 +41,7 @@ public class UserService
     {   
         try
         {
-            await _db.DeleteUserByToken(token);
+            await _confirmServiceContext.DeleteUserByToken(token);
             return true;
         }
         catch (Exception e)
@@ -60,8 +52,8 @@ public class UserService
 
     }
 
-    public Task<UserModel?> GetUser(long id)
+    public Task<User?> GetUser(long id)
     {
-        return _db.Set<UserModel>().FirstOrDefaultAsync(x => x.Id == id);
+        return _confirmServiceContext.Set<User>().FirstOrDefaultAsync(x => x.Id == id);
     }
 }

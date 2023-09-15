@@ -51,7 +51,7 @@ public class MailSendService
             {
                 Text = emailModel.Body +
                        @$" Dear {clientOfUserModel.Name}, to confirm your email, please follow the link: 
-http://localhost:5277/email-confirmation/confirm?token=+{token}"
+http://localhost:5277/email-confirmation/confirm?token={token}"
             };
             
             await _mailConnect.Send(message);

@@ -12,5 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable(nameof(User));
 
         builder.Property(x => x.CompanyName).IsRequired();
+
+        builder.HasMany<ClientOfUser>(x => x.Clients).WithOne(u => u.User).HasForeignKey(k => k.UserId);
     }
 }

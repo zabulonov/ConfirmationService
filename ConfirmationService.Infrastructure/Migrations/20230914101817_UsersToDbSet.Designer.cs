@@ -3,6 +3,7 @@ using System;
 using ConfirmationService.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConfirmationService.Infrastructure.Migrations
 {
     [DbContext(typeof(ConfirmServiceContext))]
-    partial class ConfirmServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20230914101817_UsersToDbSet")]
+    partial class UsersToDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

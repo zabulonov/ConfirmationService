@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ConfirmationService.Core.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ public class ConfirmServiceContext : DbContext
     {
     }
     
-    // public DbSet<ClientModel> Clients { get; set; }
+    public DbSet<ClientOfUser> Clients { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public Task<User> GetUserByToken(Guid token)
     {
@@ -41,4 +43,11 @@ public class ConfirmServiceContext : DbContext
         await AddAsync(newUser);
         await SaveChangesAsync();
     }
+    
+    public async Task AddClient(ClientOfUser newClient)
+    {
+        await AddAsync(newClient);
+        await SaveChangesAsync();
+    }
+    
 }

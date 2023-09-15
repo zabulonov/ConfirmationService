@@ -56,4 +56,14 @@ public class UserService
     {
         return _confirmServiceContext.Set<User>().FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<List<ClientOfUser>> GetUserClients(long id)
+    {
+        return _confirmServiceContext.Clients.Where(x => x.UserId == id).ToList();
+    }
+
+    public long TokenToPK(Guid token)
+    {
+        return _confirmServiceContext.Users.FirstOrDefault(x => x.Token == token)!.Id;
+    }
 }

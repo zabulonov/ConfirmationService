@@ -1,4 +1,5 @@
-using ConfirmationService.Host.Models;
+using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.Host;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
@@ -7,14 +8,22 @@ namespace ConfirmationService.Host.Controllers;
 [Route("email-confirmation")]
 public class MailСonfirmController
 {
-    [HttpGet("confirm")]
-    public string Confirmation(int id)
+    private readonly MailConfirmService _confirmService;
+
+    public MailСonfirmController(MailConfirmService confirmService)
     {
+        _confirmService = confirmService;
+    }
+
+    [HttpGet("confirm")]
+    public string Confirmation(Guid token)
+    {
+        _confirmService.ConfirmMail(token);
         return $"email confirmed!";
     }
     
     [HttpPost("new")]
-    public void NewConfirmation(ConfirmEmailModel model)
+    public void NewConfirmation()
     {
         
     }

@@ -1,8 +1,5 @@
 using ConfirmationService.BusinessLogic.Models;
-using ConfirmationService.Core.Entity;
-using ConfirmationService.Infrastructure.EntityFramework;
 using ConfirmationService.Infrastructure.MailConnectService;
-using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
 namespace ConfirmationService.BusinessLogic.Services;
@@ -31,13 +28,13 @@ public class MailSendService
         await _mailConnect.Send(message);
     }
     
-    public async Task SendEmailToClient(ClientOfUserModel clientOfUserModel, Guid token)
+    public async Task SendEmailToClient(UserClientModel userClientModel, Guid token)
     {
         var emailModel = new EmailModel
         {
             FromName = "Conf Service",
-            ToName = clientOfUserModel.Name,
-            ToAdress = clientOfUserModel.Email,
+            ToName = userClientModel.Name,
+            ToAdress = userClientModel.Email,
             Subject = "Email Confirmation"
         };
 
@@ -50,7 +47,7 @@ public class MailSendService
             message.Body = new TextPart("plain")
             {
                 Text = emailModel.Body +
-                       @$" Dear {clientOfUserModel.Name}, to confirm your email, please follow the link: 
+                       @$" Dear {userClientModel.Name}, to confirm your email, please follow the link: 
 http://localhost:5277/email-confirmation/confirm?token={token}"
             };
             

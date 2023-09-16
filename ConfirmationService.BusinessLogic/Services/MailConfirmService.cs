@@ -12,9 +12,9 @@ public class MailConfirmService
         _confirmServiceContext = confirmServiceContext;
     }
 
-    public void ConfirmMail(Guid token)
+    public async Task ConfirmMail(Guid token)
     {
-        var client = _confirmServiceContext.Clients.FirstOrDefaultAsync(x => x.ConfirmToken == token).Result;
+        var client = await _confirmServiceContext.Clients.FirstOrDefaultAsync(x => x.ConfirmToken == token);
 
         if (client != null)
         {

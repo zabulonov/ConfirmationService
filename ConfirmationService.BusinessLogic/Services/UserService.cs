@@ -8,10 +8,12 @@ namespace ConfirmationService.BusinessLogic.Services;
 public class UserService
 {
     private readonly ConfirmServiceContext _confirmServiceContext;
+    private readonly MailSendService _mailSendService;
 
-    public UserService(ConfirmServiceContext confirmServiceContext)
+    public UserService(ConfirmServiceContext confirmServiceContext, MailSendService mailSendService)
     {
         _confirmServiceContext = confirmServiceContext;
+        _mailSendService = mailSendService;
     }
 
     public async Task<Guid> RegisterNewUser(string companyName)
@@ -57,13 +59,37 @@ public class UserService
         return _confirmServiceContext.Set<User>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<ClientOfUser>> GetUserClients(long id)
+    public async Task<List<ClientModel>> GetUserClients(Guid token)
     {
-        return _confirmServiceContext.Clients.Where(x => x.UserId == id).ToList();
+        var clients = await _confirmServiceContext.GetUserClients(token);
+        return clients.Select(client => new ClientModel
+        {
+            Email = client.Email,
+            Name = client.Name,
+            IsEmailConfirm = client.IsEmailConfirm,
+            IsMailSent = client.IsMailSent
+        }).ToList();
     }
 
-    public long TokenToPK(Guid token)
+    public async Task SendConfirmationEmail(Guid userToken, string clientEmail)
     {
-        return _confirmServiceContext.Users.FirstOrDefault(x => x.Token == token)!.Id;
+        //это первая транзакция
+        var user = await _confirmServiceContext.GetUserByToken(userToken);
+        var newClient = new ClientOfUser("Vasya", clientEmail);
+        user.AddClient(newClient);
+        await _confirmServiceContext.SaveChangesAsync();
+        
+        //это вторая
+        // await _mailSendService.SendEmailToClient();
+        newClient.MarkAsEmailSent();
+        await _confirmServiceContext.SaveChangesAsync();
     }
+}
+
+public class ClientModel
+{
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public bool IsMailSent { get; set; }
+    public bool IsEmailConfirm {  get; set; }
 }

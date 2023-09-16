@@ -7,21 +7,19 @@ public class ClientOfUser
     public string Email { get; private set; }
     public bool IsMailSent { get; private set; }
     public bool IsEmailConfirm {  get; private set; }
-    
     public Guid ConfirmToken {  get; private set; }
+    
     public int UserId {  get; private set; }
     public User User {  get; private set; }
 
-    private ClientOfUser(int userId)
+    private ClientOfUser()
     {
-        UserId = userId;
     }
 
-    public ClientOfUser(string name, string email, int userId)
+    public ClientOfUser(string name, string email)
     {
         Name = name;
         Email = email;
-        UserId = userId;
         ConfirmToken = Guid.NewGuid();
         IsMailSent = false;
         IsEmailConfirm = false;
@@ -35,5 +33,10 @@ public class ClientOfUser
     public void IsEmailSendSetter(bool isSend)
     {
         IsMailSent = isSend;
+    }
+
+    public void MarkAsEmailSent()
+    {
+        IsMailSent = true;
     }
 }

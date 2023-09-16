@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ConfirmationService.Core.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -49,5 +48,10 @@ public class ConfirmServiceContext : DbContext
         await AddAsync(newClient);
         await SaveChangesAsync();
     }
-    
+
+    public async Task<ICollection<ClientOfUser>> GetUserClients(Guid token)
+    {
+        var user = await Set<User>().FirstOrDefaultAsync(x => x.Token.Equals(token));
+        return user != null ? user.Clients : Array.Empty<ClientOfUser>();
+    }
 }

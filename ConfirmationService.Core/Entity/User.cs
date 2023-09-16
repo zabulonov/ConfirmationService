@@ -18,4 +18,8 @@ public class User
         Token = Guid.NewGuid();
     }
 
+    public void AddClient(ClientOfUser newClient)
+    {
+        Clients.Add(newClient);
+    }
 }

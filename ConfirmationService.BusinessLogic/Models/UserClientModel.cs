@@ -1,6 +1,6 @@
 namespace ConfirmationService.BusinessLogic.Models;
 
-public class ClientOfUserModel
+public class UserClientModel
 {
     public Guid UserToken {  get; set; }
     public string Name { get; set; }

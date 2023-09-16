@@ -1,7 +1,5 @@
 using System.Text.Json.Serialization;
-using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
-using ConfirmationService.Host;
 using ConfirmationService.Infrastructure.EntityFramework;
 using ConfirmationService.Infrastructure.MailConnectService;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,4 @@
 using ConfirmationService.BusinessLogic.Services;
-using ConfirmationService.Host;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;

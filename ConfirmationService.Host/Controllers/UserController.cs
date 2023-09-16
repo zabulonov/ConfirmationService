@@ -1,10 +1,17 @@
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
 using ConfirmationService.Core.Entity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
+
+/*
+ * 1. зарегать нового юзера
+ * 2. добавить юзеру клиента
+ * 3. отправить confirmation email для клиента юзера
+ * 4. обработать переход по подтверждающей ссылке
+ * 5. получить информацию о своих юзере(ах) 
+ */
 
 [ApiController]
 [Route("User")]
@@ -40,17 +47,16 @@ public class UserController
     }
     
     [HttpPost("CreateAndSendToClient")]
-    public async Task CreateAndSendToClient([FromBody] ClientOfUserModel client)
+    public async Task CreateAndSendToClient([FromBody] UserClientModel userClient)
     {
-        var token = await _sendConfirmationService.CreateUserOfClient(client);
-        await _mailSendService.SendEmailToClient(client, token);
+        var token = await _sendConfirmationService.CreateUserOfClient(userClient);
+        // await _mailSendService.SendEmailToClient(client, token);
     }
     
     [HttpGet("GetClients")]
-    public async Task<List<ClientOfUser>> GetClients(Guid token)
+    public async Task<List<ClientModel>> GetClients(Guid token)
     {
-        var id = _userService.TokenToPK(token);
-        return _userService.GetUserClients(id).Result;
+        return await _userService.GetUserClients(token);
     }
     
 }

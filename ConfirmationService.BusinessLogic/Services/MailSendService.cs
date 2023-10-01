@@ -22,8 +22,7 @@ public class MailSendService
 
         message.Body = new TextPart("plain")
         {
-            Text = emailModel.Body +
-                   @"https://localhost:7276/EmailConfirmation/Confirm"
+            Text = emailModel.Body
         };
         await _mailConnect.Send(message);
     }

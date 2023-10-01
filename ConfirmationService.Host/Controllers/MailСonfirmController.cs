@@ -20,10 +20,4 @@ public class MailСonfirmController
         _confirmService.ConfirmMail(token);
         return $"email confirmed!";
     }
-    
-    [HttpPost("new")]
-    public void NewConfirmation()
-    {
-        
-    }
 }

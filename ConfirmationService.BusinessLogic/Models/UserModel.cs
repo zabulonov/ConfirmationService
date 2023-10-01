@@ -1,3 +1,5 @@
+using ConfirmationService.Core.Entity;
+
 namespace ConfirmationService.BusinessLogic.Models;
 
 

@@ -13,6 +13,5 @@ public class ClientOfUserConfiguration : IEntityTypeConfiguration<ClientOfUser>
         
         builder.Property(x => x.Email).IsRequired();
         builder.Property(x => x.Name).IsRequired();
-        builder.HasOne<User>(x => x.User).WithMany(u => u.Clients).HasForeignKey(k => k.UserId);
     }
 }

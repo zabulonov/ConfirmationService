@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConfirmationService.Infrastructure.Migrations
 {
     [DbContext(typeof(ConfirmServiceContext))]
-    [Migration("20230914101817_UsersToDbSet")]
-    partial class UsersToDbSet
+    [Migration("20231001082940_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

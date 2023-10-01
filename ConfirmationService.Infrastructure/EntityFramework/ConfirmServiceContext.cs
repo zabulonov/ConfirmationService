@@ -15,9 +15,9 @@ public class ConfirmServiceContext : DbContext
     public DbSet<ClientOfUser> Clients { get; set; }
     public DbSet<User> Users { get; set; }
 
-    public Task<User> GetUserByToken(Guid token)
+    public async Task<User> GetUserByToken(Guid token)
     {
-        return Set<User>().FirstOrDefaultAsync(x => x.Token.Equals(token));
+        return await Set<User>().FirstOrDefaultAsync(x => x.Token.Equals(token));
     }
 
     public Task<List<User>> GetAllUsers()
@@ -51,7 +51,9 @@ public class ConfirmServiceContext : DbContext
 
     public async Task<ICollection<ClientOfUser>> GetUserClients(Guid token)
     {
-        var user = await Set<User>().FirstOrDefaultAsync(x => x.Token.Equals(token));
+        var user = await Set<User>()
+            .Include(x => x.Clients)
+            .FirstOrDefaultAsync(x => x.Token.Equals(token));
         return user != null ? user.Clients : Array.Empty<ClientOfUser>();
     }
 }

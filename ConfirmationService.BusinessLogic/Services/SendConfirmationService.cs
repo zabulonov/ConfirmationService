@@ -17,12 +17,8 @@ public class SendConfirmationService
         _confirmServiceContext = confirmServiceContext;
     }
 
-    public async Task<Guid> CreateUserOfClient(UserClientModel userClientModel)
+    public async Task CreateUserOfClient(UserClientModel userClientModel)
     {
-        var user =  _userService.CheckToken(userClientModel.UserToken).Result;
-        var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
-        var token = newClient.ConfirmToken;
-        await _confirmServiceContext.AddClient(newClient);
-        return token;
+        await _userService.AddClientToUser(userClientModel);
     }
 }

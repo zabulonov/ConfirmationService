@@ -1,6 +1,7 @@
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
 using ConfirmationService.Core.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
@@ -15,6 +16,7 @@ namespace ConfirmationService.Host.Controllers;
 
 [ApiController]
 [Route("User")]
+[Authorize]
 public class UserController
 {
     private readonly UserService _userService;
@@ -35,6 +37,7 @@ public class UserController
     }
 
     [HttpPut("Register")]
+    [AllowAnonymous]
     public async Task<Guid> NewUser(string companyName)
     {
         return await _userService.RegisterNewUser(companyName);
@@ -48,8 +51,8 @@ public class UserController
     
     [HttpPost("CreateAndSendToClient")]
     public async Task CreateAndSendToClient([FromBody] UserClientModel userClient)
-    {
-        var token = await _sendConfirmationService.CreateUserOfClient(userClient);
+    { 
+        await _sendConfirmationService.CreateUserOfClient(userClient);
         // await _mailSendService.SendEmailToClient(client, token);
     }
     

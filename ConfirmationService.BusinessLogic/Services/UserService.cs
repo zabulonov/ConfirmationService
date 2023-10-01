@@ -20,6 +20,11 @@ public class UserService
     {
         var newUser = new User(companyName);
         await _confirmServiceContext.AddUser(newUser);
+        UserTokens.AddUser(new UserTokens.UserToken()
+        {
+            Token = newUser.Token,
+            CompanyName = companyName
+        });
         return newUser.Token;
     }
 
@@ -82,6 +87,14 @@ public class UserService
         //это вторая
         // await _mailSendService.SendEmailToClient();
         newClient.MarkAsEmailSent();
+        await _confirmServiceContext.SaveChangesAsync();
+    }
+
+    public async Task AddClientToUser(UserClientModel userClientModel)
+    {
+        var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
+        var user = await _confirmServiceContext.GetUserByToken(userClientModel.UserToken);
+        user.AddClient(newClient);
         await _confirmServiceContext.SaveChangesAsync();
     }
 }

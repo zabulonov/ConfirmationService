@@ -1,5 +1,8 @@
 using System.Text.Json.Serialization;
+using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.Host;
+using ConfirmationService.Host.Authorization;
 using ConfirmationService.Infrastructure.EntityFramework;
 using ConfirmationService.Infrastructure.MailConnectService;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +28,14 @@ builder.Services.AddDbContext<ConfirmServiceContext>(
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SendConfirmationService>();
 builder.Services.AddScoped<MailConfirmService>();
+builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)
+    .AddScheme<MyAuthenticationOptions, MyAuthenticationHandler>(MyAuthenticationOptions.DefaultScheme,
+        _ => { });
 
 var app = builder.Build();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DCS.Host v1"));
@@ -35,8 +43,15 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DCS.Host v1
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ConfirmServiceContext>();
-    await db.Database.MigrateAsync();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ConfirmServiceContext>();
+    await dbContext.Database.MigrateAsync();
+    var users = dbContext.Users.ToList();
+    var tokens = users.Select(x => new UserTokens.UserToken
+    {
+        Token = x.Token,
+        CompanyName = x.CompanyName
+    }).ToList();
+    UserTokens.Initialize(tokens);
 }
 
 app.Run();

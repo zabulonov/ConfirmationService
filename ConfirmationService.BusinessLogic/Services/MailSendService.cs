@@ -29,6 +29,7 @@ public class MailSendService
     
     public async Task SendEmailToClient(UserClientModel userClientModel, Guid token)
     {
+        
         var emailModel = new EmailModel
         {
             FromName = "Conf Service",
@@ -51,5 +52,7 @@ http://localhost:5277/email-confirmation/confirm?token={token}"
             };
             
             await _mailConnect.Send(message);
+            
+            
     }
 }

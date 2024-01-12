@@ -76,26 +76,28 @@ public class UserService
         }).ToList();
     }
 
-    public async Task SendConfirmationEmail(Guid userToken, string clientEmail)
+    public async Task SendConfirmationEmail(UserClientModel userClientModel, Guid userToken)
     {
         //это первая транзакция
         var user = await _confirmServiceContext.GetUserByToken(userToken);
-        var newClient = new ClientOfUser("Vasya", clientEmail);
+        var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
         user.AddClient(newClient);
         await _confirmServiceContext.SaveChangesAsync();
         
         //это вторая
-        // await _mailSendService.SendEmailToClient();
+        await _mailSendService.SendEmailToClient(userClientModel, newClient.ConfirmToken);
         newClient.MarkAsEmailSent();
         await _confirmServiceContext.SaveChangesAsync();
     }
 
-    public async Task AddClientToUser(UserClientModel userClientModel)
+    public async Task<Guid> AddClientToUser(UserClientModel userClientModel, Guid userToken)
     {
+        var user = await _confirmServiceContext.GetUserByToken(userToken);
         var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
-        var user = await _confirmServiceContext.GetUserByToken(userClientModel.UserToken);
         user.AddClient(newClient);
         await _confirmServiceContext.SaveChangesAsync();
+        
+        return newClient.ConfirmToken;
     }
 }
 

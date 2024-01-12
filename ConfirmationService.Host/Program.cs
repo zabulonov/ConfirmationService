@@ -32,6 +32,8 @@ builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)
     .AddScheme<MyAuthenticationOptions, MyAuthenticationHandler>(MyAuthenticationOptions.DefaultScheme,
         _ => { });
 
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 app.UseRouting();
 app.UseAuthentication();

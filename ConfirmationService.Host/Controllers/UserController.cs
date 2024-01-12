@@ -1,3 +1,4 @@
+using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
 using ConfirmationService.Core.Entity;
@@ -22,12 +23,14 @@ public class UserController
     private readonly UserService _userService;
     private readonly MailSendService _mailSendService;
     private readonly SendConfirmationService _sendConfirmationService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserController(UserService userService, MailSendService mailSendService, SendConfirmationService sendConfirmationService)
+    public UserController(UserService userService, MailSendService mailSendService, SendConfirmationService sendConfirmationService, IHttpContextAccessor httpContextAccessor)
     {
         _userService = userService;
         _mailSendService = mailSendService;
         _sendConfirmationService = sendConfirmationService;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     [HttpGet("{id}")]
@@ -44,22 +47,30 @@ public class UserController
     }
 
     [HttpDelete("DeleteMyself")]
-    public async Task Delete([FromBody] Guid token)
+    public async Task Delete()
     {
-        await _userService.DeleteUser(token);
+        var headers = _httpContextAccessor.HttpContext?.Request.Headers;
+        string myTokenValue = headers["MyToken"];
+        await _userService.DeleteUser(Guid.Parse(myTokenValue));
     }
     
     [HttpPost("CreateAndSendToClient")]
     public async Task CreateAndSendToClient([FromBody] UserClientModel userClient)
     { 
-        await _sendConfirmationService.CreateUserOfClient(userClient);
-        // await _mailSendService.SendEmailToClient(client, token);
+        var headers = _httpContextAccessor.HttpContext?.Request.Headers;
+        string myTokenValue = headers["MyToken"];
+        
+         //var confirmToken = await _sendConfirmationService.CreateUserOfClient(userClient, Guid.Parse(myTokenValue));
+         await _userService.SendConfirmationEmail(userClient, Guid.Parse(myTokenValue));
     }
     
     [HttpGet("GetClients")]
-    public async Task<List<ClientModel>> GetClients(Guid token)
+    public async Task<List<ClientModel>> GetClients()
     {
-        return await _userService.GetUserClients(token);
+        var headers = _httpContextAccessor.HttpContext?.Request.Headers;
+        string myTokenValue = headers["MyToken"];
+        
+        return await _userService.GetUserClients(Guid.Parse(myTokenValue));
     }
     
 }

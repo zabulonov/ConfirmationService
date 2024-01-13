@@ -15,9 +15,9 @@ public class MailСonfirmController
     }
 
     [HttpGet("confirm")]
-    public string Confirmation(Guid token)
+    public async Task<string> Confirmation(Guid token)
     {
-        _confirmService.ConfirmMail(token);
+        await _confirmService.ConfirmMail(token);
         return $"email confirmed!";
     }
 }

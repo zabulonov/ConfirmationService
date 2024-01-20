@@ -7,6 +7,7 @@ namespace ConfirmationService.Infrastructure.EntityFramework;
 [UsedImplicitly]
 public class ConfirmServiceContextDesignTimeFactory : IDesignTimeDbContextFactory<ConfirmServiceContext>
 {
+    //todo что тут делают креды? Убрать
     public ConfirmServiceContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ConfirmServiceContext>();

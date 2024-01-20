@@ -4,15 +4,10 @@ using MimeKit;
 
 namespace ConfirmationService.BusinessLogic.Services;
 
-public class MailSendService
+public class MailSendService(MailConnect mailConnectConnect)
 {
-    private readonly MailConnect _mailConnect;
-
-    public MailSendService(MailConnect mailConnectConnect)
-    {
-        _mailConnect = mailConnectConnect;
-    }
-
+    
+    //todo не правильно что тут захардкожен емейл
     public async Task SendEmail(EmailModel emailModel)
     {
         var message = new MimeMessage();
@@ -24,15 +19,15 @@ public class MailSendService
         {
             Text = emailModel.Body
         };
-        await _mailConnect.Send(message);
+        await mailConnectConnect.Send(message);
     }
-    
+    //todo не правильно что тут захардкожен емейл + хардкод хост ссылки
     public async Task SendEmailToClient(UserClientModel userClientModel, Guid token)
     {
         
         var emailModel = new EmailModel
         {
-            FromName = "Conf Service",
+            FromName = "Email Confirmation Service",
             ToName = userClientModel.Name,
             ToAdress = userClientModel.Email,
             Subject = "Email Confirmation"
@@ -51,7 +46,7 @@ public class MailSendService
 http://localhost:5277/email-confirmation/confirm?token={token}"
             };
             
-            await _mailConnect.Send(message);
+            await mailConnectConnect.Send(message);
             
             
     }

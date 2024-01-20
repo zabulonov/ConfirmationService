@@ -17,7 +17,7 @@ public static class UserTokens
     public class UserToken
     {
         public Guid Token { get; set; }
-        public string CompanyName { get; set; }
+        public string CompanyName { get; set; } = null!;
     }
 
     public static void Initialize(List<UserToken>? tokens)

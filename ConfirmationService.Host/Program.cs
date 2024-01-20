@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
-using ConfirmationService.Host;
 using ConfirmationService.Host.Authorization;
 using ConfirmationService.Infrastructure.EntityFramework;
 using ConfirmationService.Infrastructure.MailConnectService;
@@ -26,7 +25,6 @@ builder.Services.AddDbContext<ConfirmServiceContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<SendConfirmationService>();
 builder.Services.AddScoped<MailConfirmService>();
 builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)
     .AddScheme<MyAuthenticationOptions, MyAuthenticationHandler>(MyAuthenticationOptions.DefaultScheme,

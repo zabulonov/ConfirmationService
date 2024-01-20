@@ -6,18 +6,11 @@ namespace ConfirmationService.Host.Controllers;
 
 [ApiController]
 [Route("SendMail")]
-public class MailSendController
+public class MailSendController(MailSendService mailSendService)
 {
-    private readonly MailSendService _mailSendService;
-
-    public MailSendController(MailSendService mailSendService)
-    {
-        _mailSendService = mailSendService;
-    }
-
     [HttpPost]
     public async Task Send([FromBody] EmailModel emailModel)
     {
-        await _mailSendService.SendEmail(emailModel);
+        await mailSendService.SendEmail(emailModel);
     }
 }

@@ -5,21 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConfirmationService.BusinessLogic.Services;
 
-public class UserService
+public class UserService(ConfirmServiceContext confirmServiceContext, MailSendService mailSendService)
 {
-    private readonly ConfirmServiceContext _confirmServiceContext;
-    private readonly MailSendService _mailSendService;
-
-    public UserService(ConfirmServiceContext confirmServiceContext, MailSendService mailSendService)
-    {
-        _confirmServiceContext = confirmServiceContext;
-        _mailSendService = mailSendService;
-    }
-
     public async Task<Guid> RegisterNewUser(string companyName)
     {
         var newUser = new User(companyName);
-        await _confirmServiceContext.AddUser(newUser);
+        await confirmServiceContext.AddUser(newUser);
         UserTokens.AddUser(new UserTokens.UserToken()
         {
             Token = newUser.Token,
@@ -27,28 +18,12 @@ public class UserService
         });
         return newUser.Token;
     }
-
-    public async Task<UserModel> CheckToken(Guid token)
-    {
-        var user = await _confirmServiceContext.GetUserByToken(token);
-        if (user == null)
-        {
-            throw new Exception("Token isn't valid.");    
-        }
-        
-        return new UserModel
-        {
-            Id = user.Id,
-            Token = user.Token,
-            CompanyName = user.CompanyName
-        };
-    }
-
+    
     public async Task<bool> DeleteUser(Guid token)
     {   
         try
         {
-            await _confirmServiceContext.DeleteUserByToken(token);
+            await confirmServiceContext.DeleteUserByToken(token);
             return true;
         }
         catch (Exception e)
@@ -61,12 +36,12 @@ public class UserService
 
     public Task<User?> GetUser(long id)
     {
-        return _confirmServiceContext.Set<User>().FirstOrDefaultAsync(x => x.Id == id);
+        return confirmServiceContext.Set<User>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<ClientModel>> GetUserClients(Guid token)
     {
-        var clients = await _confirmServiceContext.GetUserClients(token);
+        var clients = await confirmServiceContext.GetUserClients(token);
         return clients.Select(client => new ClientModel
         {
             Email = client.Email,
@@ -75,36 +50,24 @@ public class UserService
             IsMailSent = client.IsMailSent
         }).ToList();
     }
-
+ // todo нужно ли переименовать для понятности?
     public async Task SendConfirmationEmail(UserClientModel userClientModel, Guid userToken)
     {
-        //это первая транзакция
-        var user = await _confirmServiceContext.GetUserByToken(userToken);
+        var user = await confirmServiceContext.GetUserByToken(userToken);
         var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
         user.AddClient(newClient);
-        await _confirmServiceContext.SaveChangesAsync();
+        await confirmServiceContext.SaveChangesAsync();
         
-        //это вторая
-        await _mailSendService.SendEmailToClient(userClientModel, newClient.ConfirmToken);
+        await mailSendService.SendEmailToClient(userClientModel, newClient.ConfirmToken);
         newClient.MarkAsEmailSent();
-        await _confirmServiceContext.SaveChangesAsync();
-    }
-
-    public async Task<Guid> AddClientToUser(UserClientModel userClientModel, Guid userToken)
-    {
-        var user = await _confirmServiceContext.GetUserByToken(userToken);
-        var newClient = new ClientOfUser(userClientModel.Name, userClientModel.Email);
-        user.AddClient(newClient);
-        await _confirmServiceContext.SaveChangesAsync();
-        
-        return newClient.ConfirmToken;
+        await confirmServiceContext.SaveChangesAsync();
     }
 }
 
 public class ClientModel
 {
-    public string Name { get; set; }
-    public string Email { get; set; }
+    public string Name { get; set; } = null!;
+    public string Email { get; set; } = null!;
     public bool IsMailSent { get; set; }
     public bool IsEmailConfirm {  get; set; }
 }

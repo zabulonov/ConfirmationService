@@ -3,24 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConfirmationService.BusinessLogic.Services;
 
-public class MailConfirmService
+public class MailConfirmService(ConfirmServiceContext confirmServiceContext)
 {
-    private readonly ConfirmServiceContext _confirmServiceContext;
-
-    public MailConfirmService(ConfirmServiceContext confirmServiceContext)
-    {
-        _confirmServiceContext = confirmServiceContext;
-    }
-
+    //todo Разобрать, как будто бы нужно возвращать в контроллер строку, а не выкидывать исключение
     public async Task ConfirmMail(Guid token)
     {
-        var client = await _confirmServiceContext.Clients.FirstOrDefaultAsync(x => x.ConfirmToken == token);
+        var client = await confirmServiceContext.Clients.FirstOrDefaultAsync(x => x.ConfirmToken == token);
 
         if (client != null)
         {
             client.IsEmailConfirmSetter(true);
-            _confirmServiceContext.Update(client);
-            _confirmServiceContext.SaveChanges();
+            confirmServiceContext.Update(client);
+            await confirmServiceContext.SaveChangesAsync();
         }
         else
             throw new Exception("Invalid token");

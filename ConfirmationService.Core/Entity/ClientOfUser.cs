@@ -9,12 +9,12 @@ public class ClientOfUser
     public bool IsEmailConfirm {  get; private set; }
     public Guid ConfirmToken {  get; private set; }
     
-    public int UserId {  get; private set; }
-    public User User {  get; private set; }
+    public int UserId { get; }
+    public User User { get; }
 
-    private ClientOfUser()
-    {
-    }
+    // private ClientOfUser()
+    // {
+    // }
 
     public ClientOfUser(string name, string email)
     {

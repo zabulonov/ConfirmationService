@@ -1,5 +1,6 @@
 # About
 Confirmation email service. This is a pet project, which is a web API for confirming email when registering in various services.
+![image_2024-01-22_17-25-42](https://github.com/zabulonov/ConfirmationService/assets/83907630/b0773d5e-afce-4e57-9189-227fc4e846c3)
 
 The main users of this service are other services that want to use a ready-made boxed solution to confirm the email of their clients.
 

@@ -6,12 +6,10 @@ namespace ConfirmationService.BusinessLogic.Services;
 
 public class MailSendService(MailConnect mailConnectConnect)
 {
-    
-    //todo не правильно что тут захардкожен емейл
     public async Task SendEmail(EmailModel emailModel)
     {
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress(emailModel.FromName, "zabulonov444@yandex.ru"));
+        message.From.Add(new MailboxAddress(emailModel.FromName, mailConnectConnect.GetEmailLogin()));
         message.To.Add(new MailboxAddress(emailModel.ToName, emailModel.ToAdress));
         message.Subject = emailModel.Subject;
 
@@ -21,7 +19,6 @@ public class MailSendService(MailConnect mailConnectConnect)
         };
         await mailConnectConnect.Send(message);
     }
-    //todo не правильно что тут захардкожен емейл + хардкод хост ссылки
     public async Task SendEmailToClient(UserClientModel userClientModel, Guid token)
     {
         
@@ -35,7 +32,7 @@ public class MailSendService(MailConnect mailConnectConnect)
 
         var message = new MimeMessage();
         
-        message.From.Add(new MailboxAddress(emailModel.FromName, "zabulonov444@yandex.ru"));
+        message.From.Add(new MailboxAddress(emailModel.FromName, mailConnectConnect.GetEmailLogin()));
         message.To.Add(new MailboxAddress(emailModel.ToName, emailModel.ToAdress));
         message.Subject = emailModel.Subject;
         
@@ -45,9 +42,6 @@ public class MailSendService(MailConnect mailConnectConnect)
                        @$" Dear {userClientModel.Name}, to confirm your email, please follow the link: 
 http://localhost:5277/email-confirmation/confirm?token={token}"
             };
-            
             await mailConnectConnect.Send(message);
-            
-            
     }
 }

@@ -7,12 +7,9 @@ namespace ConfirmationService.Infrastructure.EntityFramework;
 [UsedImplicitly]
 public class ConfirmServiceContextDesignTimeFactory : IDesignTimeDbContextFactory<ConfirmServiceContext>
 {
-    //todo что тут делают креды? Убрать
     public ConfirmServiceContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ConfirmServiceContext>();
-        optionsBuilder.UseNpgsql("Server=localhost; Database=ConfirmDb; Port=5432; User Id=postgres; Password=1234");
-
         return new ConfirmServiceContext(optionsBuilder.Options);
     }
 }

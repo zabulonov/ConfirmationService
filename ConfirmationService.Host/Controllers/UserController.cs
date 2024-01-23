@@ -14,6 +14,7 @@ public class UserController(
     IHttpContextAccessor httpContextAccessor)
 {
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<User> GetUser(long id)
     {
         return (await userService.GetUser(id))!;

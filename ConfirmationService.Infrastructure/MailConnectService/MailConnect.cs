@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -26,5 +27,10 @@ public class MailConnect
         await smtpClient.ConnectAsync(_mailConnectConfiguration.Server, _mailConnectConfiguration.Port, true);
         await smtpClient.AuthenticateAsync(_mailConnectConfiguration.Login, _mailConnectConfiguration.Password);
 
+    }
+
+    public String GetEmailLogin()
+    {
+        return _mailConnectConfiguration.Login;
     }
 }

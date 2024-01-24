@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: test:latest
+    depends_on:
+      - "postgres"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80
+      - 443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    links:
+      - "postgres"
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "ConfirmDb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1234"
+    ports:
+      - "5432:5432"

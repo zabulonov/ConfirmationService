@@ -1,19 +1,29 @@
-# https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-# Set the working directory to /app
+
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
-# Copy the project files from the current directory to the Docker image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /ConfirmationService
+COPY ["ConfirmationService.Host/ConfirmationService.Host.csproj", "ConfirmationService.Host/"]
+COPY ["ConfirmationService.BusinessLogic/ConfirmationService.BusinessLogic.csproj", "ConfirmationService.BusinessLogic/"]
+COPY ["ConfirmationService.Core/ConfirmationService.Core.csproj", "ConfirmationService.Core/"]
+COPY ["ConfirmationService.Infrastructure/ConfirmationService.Infrastructure.csproj", "ConfirmationService.Infrastructure/"]
+COPY ["ConfirmationService.Tests/ConfirmationService.Tests.csproj", "ConfirmationService.Tests/"]
 
-COPY . ./
-# Restore the NuGet packages
-RUN dotnet restore
+RUN dotnet restore "ConfirmationService.Host/ConfirmationService.Host.csproj"
+COPY . .
+WORKDIR "/ConfirmationService/ConfirmationService.Host"
 
-# Build the project
-RUN dotnet build
+RUN dotnet build "ConfirmationService.Host.csproj" -c Release -o /app/build
 
-# Start the project when the container starts
-ENTRYPOINT ["dotnet", "run", "--project", "ConfirmationService.Host"]
+FROM build AS publish
+RUN dotnet publish "ConfirmationService.Host.csproj" -c Release -o /app/publish
+
+FROM build AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ConfirmationService.Host.dll"]
+
+

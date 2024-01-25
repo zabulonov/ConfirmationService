@@ -21,6 +21,7 @@ builder.Services.AddScoped(isp =>
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
+Thread.Sleep(1000);
 builder.Services.AddDbContext<ConfirmServiceContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
 

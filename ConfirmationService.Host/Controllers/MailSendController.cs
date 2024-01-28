@@ -1,26 +1,28 @@
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
 
 [ApiController]
 [Route("SendMail")]
+[Authorize]
 public class MailSendController(MailSendService mailSendService)
 {
     /// <summary>
-    /// Description here
+    /// Sends an email
     /// </summary>
     /// <remarks>
-    /// Sample request:
+    /// Send an email using MailKit via SMTP.
+    /// This request is complete and exists separately from the user and the client. It specifies all the parameters for sending a letter manually, unlike CreateAndSendToClient
     ///
-    ///    GET api/v1/blogs
-    ///
+    /// Authorization required Header - MyToken
     /// </remarks>
-    /// <param name="filter">Description here</param>
-    /// <returns>Description here</returns>
-    /// <response code="200">Description here</response>
-    /// <response code="400">Description here</response>
+    /// <param name="emailModel">All parameters are required</param>
+    /// <response code="200">OK email sent successfully</response>
+    /// <response code="401">Authorization error, check the token in the header</response>
+    /// <response code="500">Error connecting to email client. Check that the connection data is correct in appsettings -> MailConnect</response>
     [HttpPost]
     public async Task Send([FromBody] EmailModel emailModel)
     {

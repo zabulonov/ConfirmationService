@@ -7,6 +7,14 @@ namespace ConfirmationService.Host.Controllers;
 [Route("user-tokens")]
 public class UserTokensController
 {
+    /// <summary>
+    /// FOR TESTS DELETE AT PROD!
+    /// </summary>
+    /// <remarks>
+    /// Returns all users and tokens
+    /// 
+    /// </remarks>
+    /// <response code="200">Return Tokens</response>
     [HttpGet]
     public List<UserTokens.UserToken>? GetTokens()
     {

@@ -13,32 +13,68 @@ public class UserController(
     UserService userService,
     IHttpContextAccessor httpContextAccessor)
 {
-    [HttpGet("{id}")]
-    [AllowAnonymous]
-    public async Task<User> GetUser(long id)
-    {
-        return (await userService.GetUser(id))!;
-    }
-
+    /// <summary>
+    /// Registers a new user
+    /// </summary>
+    /// <remarks>
+    /// Registers a new user (company) to use the service, returns a token
+    /// 
+    /// No authorization
+    /// </remarks>
+    /// <param name="companyName">String Name of your company</param>
+    /// <response code="200">OK Registration was successful, returned the token in the response</response>
     [HttpPut("Register")]
     [AllowAnonymous]
     public async Task<Guid> NewUser(string companyName)
     {
         return await userService.RegisterNewUser(companyName);
     }
-
+    
+    /// <summary>
+    /// Deletes a user
+    /// </summary>
+    /// <remarks>
+    /// Removes the user from the database, his token is no longer valid, he cannot send emails to his clients
+    ///
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK user delete successfully</response>
+    /// <response code="401">Authorization error, check the token in the header</response>
     [HttpDelete("DeleteMyself")]
     public async Task Delete()
     {
         await userService.DeleteUser(GetHeaderToken());
     }
-    
+    /// <summary>
+    /// Sends an email to your client
+    /// </summary>
+    /// <remarks>
+    /// Send an email using MailKit via SMTP.
+    /// 
+    /// Sends an email to your client with a link to confirm mail, the link comes to the mail, the client clicks on it and the mail is considered confirmed
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <param name="userClient">All parameters are required</param>
+    /// <response code="200">OK email sent successfully</response>
+    /// <response code="401">Authorization error, check the token in the header</response>
+    /// <response code="500">Error connecting to email client. Check that the connection data is correct in appsettings -> MailConnect</response>
     [HttpPost("CreateAndSendToClient")]
     public async Task CreateAndSendToClient([FromBody] UserClientModel userClient)
     { 
          await userService.SendConfirmationEmail(userClient, GetHeaderToken());
     }
     
+    /// <summary>
+    /// Return info about all your clients
+    /// </summary>
+    /// <remarks>
+    /// Returns in the form of a json information about all your clients and the confirmation status of all their mails
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK return info</response>
+    /// <response code="401">Authorization error, check the token in the header</response>
     [HttpGet("GetClients")]
     public async Task<List<ClientModel>> GetClients()
     {

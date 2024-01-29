@@ -80,6 +80,12 @@ public class UserController(
     {
         return await userService.GetUserClients(GetHeaderToken());
     }
+    
+    [HttpGet("GetOneClient")]
+    public async Task<ClientOfUser?> GetOneClient(String clientMail)
+    {
+        return await userService.GetClientByMail(GetHeaderToken(), clientMail);
+    }
 
     private Guid GetHeaderToken()
     {

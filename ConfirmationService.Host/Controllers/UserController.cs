@@ -81,6 +81,16 @@ public class UserController(
         return await userService.GetUserClients(GetHeaderToken());
     }
     
+    /// <summary>
+    /// Return info about one your client
+    /// </summary>
+    /// <remarks>
+    /// Returns in the form of a json all information about one of your clients and the confirmation status of all their mails.
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK return info</response>
+    /// <response code="201">No information for this email</response>
     [HttpGet("GetOneClient")]
     public async Task<ClientOfUser?> GetOneClient(String clientMail)
     {

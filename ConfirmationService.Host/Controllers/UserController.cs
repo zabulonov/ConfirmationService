@@ -97,6 +97,11 @@ public class UserController(
         return await userService.GetClientByMail(GetHeaderToken(), clientMail);
     }
 
+    [HttpPost("ResendMail")]
+    public async Task ResendMailToClient(String Mail)
+    {
+        await userService.ResendingConfirmation(Mail, GetHeaderToken());
+    }
     private Guid GetHeaderToken()
     {
         var headers = httpContextAccessor.HttpContext?.Request.Headers;

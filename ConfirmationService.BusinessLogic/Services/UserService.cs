@@ -71,4 +71,18 @@ public class UserService(ConfirmServiceContext confirmServiceContext, MailSendSe
 
         return client;
     }
+    public async Task ResendingConfirmation(String Mail, Guid userToken)
+    {
+        var userClients = await confirmServiceContext.GetUserClients(userToken);
+        
+        var client = (from x in userClients where x.Email == Mail select x).FirstOrDefault();
+
+        if (client != null)
+        {
+            await mailSendService.SendEmailToClient(new UserClientModel() {Name=client.Name, Email = client.Email}, client.ConfirmToken);
+            client.MarkAsEmailSent();
+            await confirmServiceContext.SaveChangesAsync();
+        }
+    }
+
 }

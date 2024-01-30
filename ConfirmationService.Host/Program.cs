@@ -12,8 +12,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
-
 builder.Services.Configure<MailConnectConfiguration>(builder.Configuration.GetSection("MailConnect"));
 builder.Services.AddSwaggerGen(c =>
 {
@@ -35,6 +33,27 @@ builder.Services.AddSwaggerGen(c =>
         {
             Name = "MIT License",
             Url = new Uri("https://github.com/zabulonov/ConfirmationService/blob/main/LICENSE"),
+        }
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        In = ParameterLocation.Header,
+        Name = "MyToken",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
         }
     });
 });

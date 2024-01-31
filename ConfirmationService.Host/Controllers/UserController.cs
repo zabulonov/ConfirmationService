@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
 using ConfirmationService.Core.Entity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfirmationService.Host.Controllers;
@@ -101,6 +105,12 @@ public class UserController(
     public async Task ResendMailToClient(String Mail)
     {
         await userService.ResendingConfirmation(Mail, GetHeaderToken());
+    }
+    
+    [HttpGet("GetOneClientStatus")]
+    public async Task<bool> GetOneClientStatus(String clientMail)
+    {
+        return await userService.GetClientByMailStatus(GetHeaderToken(), clientMail);
     }
     private Guid GetHeaderToken()
     {

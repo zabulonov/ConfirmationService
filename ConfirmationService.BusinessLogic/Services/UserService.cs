@@ -85,4 +85,12 @@ public class UserService(ConfirmServiceContext confirmServiceContext, MailSendSe
         }
     }
 
+    public async Task<bool> GetClientByMailStatus(Guid userToken, String Mail)
+    {
+        var userClients = await confirmServiceContext.GetUserClients(userToken);
+
+        var client = (from x in userClients where x.Email == Mail select x).FirstOrDefault();
+
+        return client.IsEmailConfirm;
+    }
 }

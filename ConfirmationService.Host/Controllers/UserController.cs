@@ -101,12 +101,33 @@ public class UserController(
         return await userService.GetClientByMail(GetHeaderToken(), clientMail);
     }
 
+    /// <summary>
+    /// Sends confirmation email again
+    /// </summary>
+    /// <remarks>
+    /// Sends an email to your client with a link to confirm mail, the link comes to the mail, the client clicks on it and the mail is considered confirmed.
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK email sent successfully</response>
+    /// <response code="401">Authorization error, check the token in the header</response>
+    /// <response code="500">Error connecting to email client. Check that the connection data is correct in appsettings -> MailConnect</response>
     [HttpPost("ResendMail")]
     public async Task ResendMailToClient(String Mail)
     {
         await userService.ResendingConfirmation(Mail, GetHeaderToken());
     }
     
+    /// <summary>
+    /// Return true/false email confirm status
+    /// </summary>
+    /// <remarks>
+    /// Return confirmation status(true/false) about one your client
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK return info</response>
+    /// <response code="201">No information for this email</response>
     [HttpGet("GetOneClientStatus")]
     public async Task<bool> GetOneClientStatus(String clientMail)
     {

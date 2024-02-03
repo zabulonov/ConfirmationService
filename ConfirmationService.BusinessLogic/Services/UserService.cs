@@ -93,4 +93,12 @@ public class UserService(ConfirmServiceContext confirmServiceContext, MailSendSe
 
         return client.IsEmailConfirm;
     }
+
+    public async Task GetClientsStatusByMail(Guid token, String mail)
+    {
+        var clients = (await confirmServiceContext.GetUserClients(token)).ToList();
+        var user = await confirmServiceContext.GetUserByToken(token);
+
+        await mailSendService.SendClientsStatus(clients, user, mail);
+    }
 }

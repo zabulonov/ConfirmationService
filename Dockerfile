@@ -10,7 +10,6 @@ COPY ["ConfirmationService.Host/ConfirmationService.Host.csproj", "ConfirmationS
 COPY ["ConfirmationService.BusinessLogic/ConfirmationService.BusinessLogic.csproj", "ConfirmationService.BusinessLogic/"]
 COPY ["ConfirmationService.Core/ConfirmationService.Core.csproj", "ConfirmationService.Core/"]
 COPY ["ConfirmationService.Infrastructure/ConfirmationService.Infrastructure.csproj", "ConfirmationService.Infrastructure/"]
-COPY ["ConfirmationService.Tests/ConfirmationService.Tests.csproj", "ConfirmationService.Tests/"]
 
 RUN dotnet restore "ConfirmationService.Host/ConfirmationService.Host.csproj"
 COPY . .

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.Host;
 using ConfirmationService.Host.Authorization;
 using ConfirmationService.Infrastructure.EntityFramework;
 using ConfirmationService.Infrastructure.MailConnectService;
@@ -13,57 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.Configure<MailConnectConfiguration>(builder.Configuration.GetSection("MailConnect"));
-builder.Services.AddSwaggerGen(c =>
-{
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Email Confirmation Service API",
-        Version = "v1",
-        Description = "An API to perform Employee operations",
-        Contact = new OpenApiContact
-        {
-            Name = "Alexey Zabulonov",
-            Email = "zabulonov444@yandex.ru",
-            Url = new Uri("https://t.me/ulove1337"),
-        },
-        License = new OpenApiLicense
-        {
-            Name = "MIT License",
-            Url = new Uri("https://github.com/zabulonov/ConfirmationService/blob/main/LICENSE"),
-        }
-    });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-        In = ParameterLocation.Header,
-        Name = "MyToken",
-        Type = SecuritySchemeType.ApiKey
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    });
-});
+builder.Services.ConfigureSwagger();
 builder.Services.AddScoped(isp =>
 {
     var configuration = isp.GetRequiredService<IOptions<MailConnectConfiguration>>();
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
-Thread.Sleep(1000);
 builder.Services.AddDbContext<ConfirmServiceContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
 

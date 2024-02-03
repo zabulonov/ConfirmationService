@@ -11,13 +11,13 @@ services:
 
   webapi:
     image: confirmation_service:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     ports:
       - "9901:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      # - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     volumes:
       - ~/.aspnet/https:/https:ro

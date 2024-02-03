@@ -21,8 +21,13 @@ builder.Services.AddScoped(isp =>
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
-builder.Services.AddDbContext<ConfirmServiceContext>(
-    o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
+builder.Services.AddDbContext<ConfirmServiceContext>(o => {
+    var env = builder.Environment.EnvironmentName;
+    Console.WriteLine($"Env is {env}");
+    var connectionString = builder.Configuration.GetConnectionString("ConfirmationServiceDb");
+    Console.WriteLine($"Connection string is {connectionString}");
+    o.UseNpgsql(connectionString);
+});
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<MailConfirmService>();

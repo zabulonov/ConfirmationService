@@ -23,9 +23,9 @@ builder.Services.AddScoped(isp =>
 builder.Services.AddScoped<MailSendService>();
 builder.Services.AddDbContext<ConfirmServiceContext>(o => {
     var env = builder.Environment.EnvironmentName;
-    Console.WriteLine($"Env is {env}");
+    //Console.WriteLine($"Env is {env}");
     var connectionString = builder.Configuration.GetConnectionString("ConfirmationServiceDb");
-    Console.WriteLine($"Connection string is {connectionString}");
+    //Console.WriteLine($"Connection string is {connectionString}");
     o.UseNpgsql(connectionString);
 });
 

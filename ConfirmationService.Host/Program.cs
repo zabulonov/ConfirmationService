@@ -21,9 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.Configure<MailConnectConfiguration>(builder.Configuration.GetSection("MailConnect"));
-<<<<<<< HEAD
 builder.Services.ConfigureSwagger();
-=======
 //TODO - настройка свагера занимает пол файла, вынести
 builder.Services.AddSwaggerGen(c =>
 {
@@ -69,14 +67,12 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
->>>>>>> 7b107bc (Add ConfirmStatusByMail html table)
 builder.Services.AddScoped(isp =>
 {
     var configuration = isp.GetRequiredService<IOptions<MailConnectConfiguration>>();
     return new MailConnect(configuration.Value);
 });
 builder.Services.AddScoped<MailSendService>();
-<<<<<<< HEAD
 builder.Services.AddDbContext<ConfirmServiceContext>(o => {
     var env = builder.Environment.EnvironmentName;
     Console.WriteLine($"Env is {env}");
@@ -84,13 +80,11 @@ builder.Services.AddDbContext<ConfirmServiceContext>(o => {
     Console.WriteLine($"Connection string is {connectionString}");
     o.UseNpgsql(connectionString);
 });
-=======
+
 // TODO - Sleep, это костыль, нужен для того, чтобы compose-up нормально запускался
 Thread.Sleep(1000);
 builder.Services.AddDbContext<ConfirmServiceContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("ConfirmationServiceDb")));
->>>>>>> 7b107bc (Add ConfirmStatusByMail html table)
-
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<MailConfirmService>();
 builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)

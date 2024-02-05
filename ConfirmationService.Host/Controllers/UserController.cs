@@ -133,6 +133,12 @@ public class UserController(
     {
         return await userService.GetClientByMailStatus(GetHeaderToken(), clientMail);
     }
+    
+    [HttpGet("GetClientsStatusByMail")]
+    public async Task GetClientsStatusByMail(String userMail)
+    {
+        await userService.GetClientsStatusByMail(GetHeaderToken(),userMail);
+    }
     private Guid GetHeaderToken()
     {
         var headers = httpContextAccessor.HttpContext?.Request.Headers;

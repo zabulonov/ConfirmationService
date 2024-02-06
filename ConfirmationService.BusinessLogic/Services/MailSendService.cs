@@ -67,7 +67,7 @@ public class MailSendService(MailConnect mailConnectConnect)
         StringBuilder body = new StringBuilder();
 
         body.Append(
-            "<!DOCTYPE html>\n<html>\n<head>\n<style>\ntable, th, td {\n  border: 1px solid black;\n  border-collapse: collapse;\n}\n</style>\n</head>\n<body>\n\n<h2>Your clients</h2>\n<p>If you want the borders to collapse into one border, add the CSS border-collapse property.</p>\n\n<table style=\"width:100%\">\n  <tr>\n    <th>Name</th>\n    <th>Email</th> \n    <th>Status</th>\n  </tr>");
+            "<!DOCTYPE html>\n<html>\n<head>\n<style>\ntable, th, td {\n  border: 1px solid black;\n  border-collapse: collapse;\n}\n</style>\n</head>\n<body>\n\n<h2>Your clients</h2>\n<p>The table displays all your clients (with names and email), as well as email confirmation status.</p>\n\n<table style=\"width:100%\">\n  <tr>\n    <th>Name</th>\n    <th>Email</th> \n    <th>Status</th>\n  </tr>");
         
         foreach (var client in clients)
         {

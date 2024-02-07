@@ -2,6 +2,7 @@ using System.Text;
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.Core.Entity;
 using ConfirmationService.Infrastructure.MailConnectService;
+using Microsoft.Extensions.Primitives;
 using MimeKit;
 
 namespace ConfirmationService.BusinessLogic.Services;
@@ -73,7 +74,7 @@ public class MailSendService(MailConnect mailConnectConnect)
             body.Append(string.Format("<tr>\n    <td>{0}</td>\n    <td>{1}</td>\n    <td>{2}</td>\n  </tr>", client.Name, client.Email, client.IsEmailConfirm)); 
         }
         body.Append("</table>\n\n</body>\n</html>");
-
+        body.Append("<br>Made as a pet project by Alexey Zabulonov<br>\n<a href=\"https://t.me/ulove1337\"><b>Telegram</b></a><br>\n<a href=\"https://github.com/zabulonov\">GitHub</a><br>\n<a href=\"https://www.linkedin.com/in/alexey-zabulonov-442b03283\">LinkedIn</a>");
         builder.HtmlBody = body.ToString();
         message.Body = builder.ToMessageBody();
         await mailConnectConnect.Send(message);

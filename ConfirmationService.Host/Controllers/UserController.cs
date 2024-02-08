@@ -133,7 +133,17 @@ public class UserController(
     {
         return await userService.GetClientByMailStatus(GetHeaderToken(), clientMail);
     }
-    
+    /// <summary>
+    /// Sends email with confirm status of your clients.
+    /// </summary>
+    /// <remarks>
+    /// Sends a email with a table containing information about each of your clients (name, email, confirmation status).
+    /// 
+    /// Authorization required Header - MyToken
+    /// </remarks>
+    /// <response code="200">OK return info</response>
+    /// /// <response code="401">Authorization error, check the token in the header</response>
+    /// <response code="500">Error connecting to email client. Check that the connection data is correct in appsettings -> MailConnect</response>
     [HttpGet("GetClientsStatusByMail")]
     public async Task GetClientsStatusByMail(String userMail)
     {

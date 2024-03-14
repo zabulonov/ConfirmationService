@@ -11,6 +11,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+builder.Services.AddProblemDetails();
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.Configure<MailConnectConfiguration>(builder.Configuration.GetSection("MailConnect"));
@@ -38,6 +42,7 @@ builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+app.UseExceptionHandler();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

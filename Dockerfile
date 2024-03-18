@@ -6,6 +6,7 @@ COPY ["ConfirmationService.BusinessLogic/ConfirmationService.BusinessLogic.cspro
 COPY ["ConfirmationService.Core/ConfirmationService.Core.csproj", "ConfirmationService.Core/"]
 COPY ["ConfirmationService.Infrastructure/ConfirmationService.Infrastructure.csproj", "ConfirmationService.Infrastructure/"]
 
+
 RUN dotnet restore "ConfirmationService.Host/ConfirmationService.Host.csproj"
 COPY . .
 WORKDIR "/ConfirmationService/ConfirmationService.Host"

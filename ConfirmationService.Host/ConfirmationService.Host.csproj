@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AspireServices\AspireServices.csproj" />
+        <ProjectReference Include="..\ConfirmationService.AspireServices\ConfirmationService.AspireServices.csproj" />
         <ProjectReference Include="..\ConfirmationService.BusinessLogic\ConfirmationService.BusinessLogic.csproj" />
     </ItemGroup>
 

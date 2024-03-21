@@ -24,7 +24,8 @@ public class MailСonfirmController(MailConfirmService confirmService)
         await confirmService.ConfirmMail(token);
         
         String html = "<h1>Your email has been successfully confirmed!</h1>" +
-                      "Now you can close the page";
+                      "Now you can close the page  <script type='text/javascript'>\n setTimeout(function(){ window.close(); }, 5000);\n </script>";
+        
         return new ContentResult
         {
             Content = html,

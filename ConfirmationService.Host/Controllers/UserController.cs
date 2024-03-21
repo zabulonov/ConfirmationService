@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ConfirmationService.BusinessLogic.Models;
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.BusinessLogic.Services.Interfaces;
 using ConfirmationService.Core.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,7 @@ namespace ConfirmationService.Host.Controllers;
 [Route("User")]
 [Authorize]
 public class UserController(
-    UserService userService,
+    IUserService userService,
     IHttpContextAccessor httpContextAccessor)
 {
     /// <summary>

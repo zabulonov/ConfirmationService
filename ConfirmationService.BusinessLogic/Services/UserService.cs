@@ -1,11 +1,12 @@
 using ConfirmationService.BusinessLogic.Models;
+using ConfirmationService.BusinessLogic.Services.Interfaces;
 using ConfirmationService.Core.Entity;
 using ConfirmationService.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConfirmationService.BusinessLogic.Services;
 
-public class UserService(ConfirmServiceContext confirmServiceContext, MailSendService mailSendService)
+public class UserService(ConfirmServiceContext confirmServiceContext, MailSendService mailSendService) : IUserService
 {
     public async Task<Guid> RegisterNewUser(string companyName)
     {

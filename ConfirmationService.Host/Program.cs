@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using ConfirmationService.BusinessLogic;
 using ConfirmationService.BusinessLogic.Services;
+using ConfirmationService.BusinessLogic.Services.Interfaces;
 using ConfirmationService.Host;
 using ConfirmationService.Host.Authorization;
 using ConfirmationService.Infrastructure.EntityFramework;
@@ -33,7 +34,7 @@ builder.Services.AddDbContext<ConfirmServiceContext>(o => {
     o.UseNpgsql(connectionString);
 });
 
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<MailConfirmService>();
 builder.Services.AddAuthentication(MyAuthenticationOptions.DefaultScheme)
     .AddScheme<MyAuthenticationOptions, MyAuthenticationHandler>(MyAuthenticationOptions.DefaultScheme,
@@ -49,7 +50,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DCS.Host v1"));
-
+Thread.Sleep(3000);
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {

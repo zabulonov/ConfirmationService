@@ -29,4 +29,3 @@ ARG CUSTOM_ENV_VAR=default_value
 ENV ASPNETCORE_ENVIRONEMNT=$CUSTOM_ENV_VAR
 
 ENTRYPOINT ["dotnet", "ConfirmationService.Host.dll"]
-
